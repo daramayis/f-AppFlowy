@@ -1,0 +1,69 @@
+version: "3"
+
+x-uffizzi:
+  ingress:
+    service: novnc
+    port: 80
+
+services:
+
+  novnc:
+    container_name: vnc
+    image: dorowu/ubuntu-desktop-lxde-vnc
+    environment:
+      - VNC_VIEW_ONLY=true
+    ports:
+      - "80:80"
+    restart: on-failure
+    deploy:
+      resources:
+        limits:
+          memory: 4000M
+          cpu: 4000m
+
+  # app:
+  #   container_name: app
+  #   image: "${APP_IMAGE}"
+  #   # image: "ttl.sh/f0c0d6e9-f0ea-4f03-b04d-d673f4804901:24h" 
+  #   stdin_open: true
+  #   # tty: true
+  #   # devices:
+  #   #   - "/dev/dri:/dev/dri" # fixes MESA-LOADER error
+  #   environment:
+  #     # - DISPLAY=novnc:0.0
+  #     - DISPLAY=localhost:0.0
+  #     # - DISPLAY=:0
+  #     - NO_AT_BRIDGE=1 # fixes dbind-WARNING
+  #     - GDK_SYNCHRONIZE=0
+  #   restart: on-failure
+  #   depends_on:
+  #     - novnc
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 2000M
+  #         cpu: 2000m    
+
+  # novnc:
+  #   container_name: novnc
+  #   image: theasp/novnc:latest
+  #   environment:
+  #     # Adjust to your screen size
+  #     - DISPLAY_WIDTH=1500
+  #     - DISPLAY_HEIGHT=900
+  #     - RUN_XTERM=no
+  #     - RUN_FLUXBOX=no
+  #   ports:
+  #     - "8080:8080"
+  #   restart: on-failure
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 2000M
+  #         cpu: 2000m    
+
+    # healthcheck:
+    #     test: ["CMD", "curl", "-f", "http://localhost:8080"]
+    #     interval: 60s
+    #     timeout: 30s
+    #     retries: 30
